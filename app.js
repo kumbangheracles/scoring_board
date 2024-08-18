@@ -23,6 +23,7 @@ p1button.addEventListener('click', () => {
     }
 
     due()
+    win()
 })
 
 p2button.addEventListener('click', () => {
@@ -36,6 +37,7 @@ p2button.addEventListener('click', () => {
     }
 
     due()
+    win()
 })
 
 resetbutton.addEventListener('click', reset)
@@ -59,8 +61,29 @@ function reset() {
     winner = true
     p1skor.textContent = 0
     p2skor.textContent = 0
-    
+
+    p1button.textContent = '+1'
+    p2button.textContent = '+1'
+
+    p1button.classList.remove('win')
+    p2button.classList.remove('win')
+
+    for (i = 0; i <= document.querySelectorAll('input').length; i++) {
+        document.querySelector('input').remove()
+    }
+
     duece.style.display = 'none'
+}
+
+function win() {
+    if(skor === winpoin) {
+        p1button.textContent = 'Winner!🎉'
+        p1button.classList.add('win')
+
+    } else if (skor2 === winpoin) {
+        p2button.textContent = 'Winner!🎉'
+        p2button.classList.add('win')
+    }
 }
 
 cabor.addEventListener('change', () => {
@@ -68,3 +91,42 @@ cabor.addEventListener('change', () => {
 
     reset()
 })
+
+const buttons = document.querySelectorAll('#buton')
+const forms = document.querySelectorAll('#form')
+const names = document.querySelectorAll('#nama')
+
+for(let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', (e) => {
+        e.preventDefault()
+        
+        const form = forms[i]
+        const nama = names[i]
+        let input = form.querySelector('input')
+        
+        if (input === null) {
+            input = document.createElement('input')
+            input.placeholder = 'Player name'
+            
+            input.addEventListener('input', () => {
+                nama.innerText = input.value
+            })
+
+            form.appendChild(input)
+            
+        } else if (input.value === '') {
+            if (nama === names[0]) {
+                nama.innerText = 'Player 1'
+
+            } else if (nama === names[1]) {
+                nama.innerText = 'Player 2'
+            }
+            
+            input.remove()
+            
+        } else {
+            nama.innerText = input.value
+            input.remove()
+        }
+    })
+}
